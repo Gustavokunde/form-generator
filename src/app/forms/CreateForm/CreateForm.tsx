@@ -1,51 +1,58 @@
-import {
-  Combobox,
-  Field,
-  Input,
-  makeStyles,
-  Menu,
-  MenuItem,
-  MenuList,
-  MenuPopover,
-  MenuTrigger,
-  Option,
-} from '@fluentui/react-components';
-import {
-  AlignSpaceEvenlyHorizontalRegular,
-  DataUsageEditRegular,
-  DeleteRegular,
-  FlowchartRegular,
-  MoreHorizontalFilled,
-} from '@fluentui/react-icons';
+import { Combobox, Field, Input, Option } from '@fluentui/react-components';
+import { DeleteRegular } from '@fluentui/react-icons';
+import { FieldSize } from '../../../app/interfaces/metadata';
+import { MenuOptions } from '../../../components/MenuOptions/MenuOptions';
 import { useMetadataCreation } from '../../hooks/useMetadataCreation';
 
 const InputOptions = ['title'];
 const ViewTypeOptions = ['Create', 'Edit', 'View'];
 const styles = {
   primary: '#291e87',
+  secondary: '',
 };
 
-const useStyles = makeStyles({
-  root: {
-    // Stack the label above the field with a gap
-    display: 'grid',
-    gridTemplateRows: 'repeat(1fr)',
-    justifyItems: 'start',
-    gap: '2px',
-    maxWidth: '400px',
-  },
-});
+const getSizeOptions = (size: FieldSize) => {
+  const sizes: { [K in FieldSize]: string } = {
+    small: 'w-1/3',
+    medium: 'w-1/2',
+    large: 'w-4/6',
+    'extra-large': 'w-100',
+  };
+  return sizes[size];
+};
 
 const CreateForm = () => {
-  const styles = useStyles();
+  const {
+    addNewRow,
+    addNewSection,
+    removeSection,
+    metadata,
+    addField,
+    editField,
+    deleteField,
+  } = useMetadataCreation();
 
-  const { addNewRow, addNewSection, metadata } = useMetadataCreation();
-
-  const handleInputOptions: React.MouseEventHandler<HTMLButtonElement> = (
-    e
+  const handleShowInputOptions = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
     e.preventDefault();
+  };
+
+  const onInputOptionsChoose = (
+    data: 'layoutRules' | 'edit' | 'delete',
+    sectionIndex: number,
+    rowIndex: number,
+    fieldIndex: number
+  ) => {
+    console.log('entered here');
+    const menuOptions = {
+      delete: () => deleteField(sectionIndex, rowIndex, fieldIndex),
+      edit: () => {},
+      layoutRules: () => {},
+    };
+
+    menuOptions[data]();
   };
 
   return (
@@ -55,12 +62,7 @@ const CreateForm = () => {
         <Field label="Label" className="w-full">
           <Input />
         </Field>
-        <Field
-          label="View Type"
-          className="w-full"
-          // validationState="success"
-          // validationMessage="This is a success message."
-        >
+        <Field label="View Type" className="w-full">
           <Combobox>
             {ViewTypeOptions.map((option) => (
               <Option key={option}>{option}</Option>
@@ -68,69 +70,85 @@ const CreateForm = () => {
           </Combobox>
         </Field>
       </section>
-      {metadata.sections.map((section, sectionIndex) => (
-        <div className="flex flex-col" key={'section' + sectionIndex}>
-          <span>section name</span>
-          {section.rows.map((row, rowIndex) => (
-            <div key={'row' + rowIndex}>
-              {row.map((field, fieldIndex) => (
+      <div className="flex gap-2">
+        <section className="flex flex-col gap-2 mt-2">
+          {metadata.sections.map((section, sectionIndex) => (
+            <Input
+              key={'sectionInput' + sectionIndex}
+              value={section.name}
+              contentAfter={
+                <button onClick={() => removeSection(sectionIndex)}>
+                  <DeleteRegular />
+                </button>
+              }
+            />
+          ))}
+          <button
+            className="border-dashed border rounded p-2 text-left"
+            onClick={addNewSection}
+          >
+            + Add section
+          </button>
+        </section>
+        <section className="mt-2 w-full">
+          {metadata.sections.map((section, sectionIndex) => (
+            <div className="flex flex-col gap-2" key={'section' + sectionIndex}>
+              <span>section name</span>
+              {section.rows.map((fields, rowIndex) => (
                 <div
-                  className="flex"
-                  // validationState="success"
-                  // validationMessage="This is a success message."
+                  key={'row' + rowIndex + sectionIndex.toString()}
+                  className="flex w-full"
                 >
-                  <Combobox placeholder="+ Add input" expandIcon={null}>
-                    {InputOptions.map((option) => (
-                      <Option key={option}>{option}</Option>
-                    ))}
-                  </Combobox>
-                  <Menu>
-                    <MenuTrigger disableButtonEnhancement>
-                      <button
-                        className="flex -ml-6 relative items-center hover:text-[#af2b52]"
-                        onClick={handleInputOptions}
+                  {fields.map((field, fieldIndex) => (
+                    <div className={`flex ${getSizeOptions(field.size)}`}>
+                      <Combobox
+                        className="w-full"
+                        placeholder="+ Add input"
+                        expandIcon={null}
                       >
-                        <MoreHorizontalFilled />
-                      </button>
-                    </MenuTrigger>
-
-                    <MenuPopover>
-                      <MenuList>
-                        <MenuItem disabled>
-                          <FlowchartRegular /> Set Layout Rules
-                        </MenuItem>
-                        <Menu>
-                          <MenuTrigger disableButtonEnhancement>
-                            <MenuItem>
-                              <AlignSpaceEvenlyHorizontalRegular /> Field Width{' '}
-                            </MenuItem>
-                          </MenuTrigger>
-                          <MenuPopover>
-                            <MenuList>
-                              <MenuItem>Small</MenuItem>
-                              <MenuItem>Medium</MenuItem>
-                              <MenuItem>Large</MenuItem>
-                              <MenuItem>Extra Large</MenuItem>
-                            </MenuList>
-                          </MenuPopover>
-                        </Menu>
-                        <MenuItem>
-                          <DataUsageEditRegular /> Edit Field
-                        </MenuItem>
-                        <MenuItem>
-                          <DeleteRegular /> Delete
-                        </MenuItem>
-                      </MenuList>
-                    </MenuPopover>
-                  </Menu>
+                        {InputOptions.map((option) => (
+                          <Option key={option}>{option}</Option>
+                        ))}
+                      </Combobox>
+                      <MenuOptions
+                        onChangeFieldSize={(size) =>
+                          editField(sectionIndex, rowIndex, fieldIndex, {
+                            ...field,
+                            size,
+                          })
+                        }
+                        onInputOptionsChoose={(data) =>
+                          onInputOptionsChoose(
+                            data,
+                            sectionIndex,
+                            rowIndex,
+                            fieldIndex
+                          )
+                        }
+                        handleShowInputOptions={handleShowInputOptions}
+                      />
+                    </div>
+                  ))}
+                  {fields.length < 3 && fields[0].size !== 'extra-large' && (
+                    <button
+                      className="bg-gray-100 rounded p-2"
+                      onClick={() => addField(sectionIndex, rowIndex)}
+                    >
+                      + Add a column
+                    </button>
+                  )}
                 </div>
               ))}
+              <button
+                className="bg-gray-100 rounded p-2"
+                onClick={() => addNewRow(sectionIndex)}
+              >
+                + Add Row
+              </button>
             </div>
           ))}
-          <button onClick={() => addNewRow(sectionIndex)}>+Add row</button>
-        </div>
-      ))}
-      <button onClick={addNewSection}>+Add section</button>
+        </section>
+      </div>
     </>
   );
 };

@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@fluentui/react-components": "^9.54.4",
+    "@fluentui/react-icons": "^2.0.247",
     "react": "link:@types/@fluentui/react",
     "react-dom": "18.3.1"
   },

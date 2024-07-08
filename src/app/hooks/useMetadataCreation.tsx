@@ -1,20 +1,15 @@
 import { useState } from "react";
+import { Metadata } from "../interfaces/metadata";
 const rowsSize = 3;
 
-const useMetadataCreation = () => {
 
-const [metadata, setMetadata] = useState({
+export const useMetadataCreation = () => {
+
+const [metadata, setMetadata] = useState<Metadata>({
     sections: [
       {
         name: '',
-        id: '',
-        rows: [
-          [
-            { fieldType: 'Title', size: 'small' },
-            { fieldType: 'Title', size: 'small' },
-            { fieldType: 'Title', size: 'small' },
-          ],
-        ],
+        rows: [],
       },
     ],
   });
@@ -31,7 +26,7 @@ const [metadata, setMetadata] = useState({
 
   const addNewSection = () => {
     const { sections } = { ...metadata };
-    sections.push({ name: '', id: '', rows: [] });
+    sections.push({ name: '', rows: [] });
     setMetadata({ sections });
   };
 
@@ -40,4 +35,3 @@ return { metadata, addNewRow, addNewSection}
 };
 
 
-export { useMetadataCreation };

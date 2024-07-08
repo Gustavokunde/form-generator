@@ -1,5 +1,5 @@
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
-import CreateForm from './app/forms/CreateForm';
+import CreateForm from './app/forms/CreateForm/CreateForm';
 
 export function App() {
   return (

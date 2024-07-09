@@ -82,6 +82,7 @@ Run `pnpm start` to start the development server.
 First time working with fluent ui so I had to spend some time reading fluent ui documentation.
 Also had to remember functionalities of React Hook Form as it has been some time that I don't use this tool.
 Had to understand the business logic so I did some questions via email and watched the video presentation demo a hundred times.
+Half part of commits were made in a bitbucket student account so I had to rebase and change it to to place it on github.
 
 ## Future improvements
 

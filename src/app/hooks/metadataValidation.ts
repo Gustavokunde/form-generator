@@ -9,18 +9,20 @@ export const metadataValidation = object().shape({
         name: string().trim().required('Field is required'),
         rows: array()
           .of(
-            array()
-              .of(
-                object()
-                  .shape({
-                    fieldType: string().trim().required('Field is required'),
-                    size: mixed()
-                      .oneOf(['Small', 'Medium', 'Large', 'Extra-Large'])
-                      .required(),
-                  })
-                  .required()
-              )
-              .required()
+            object().shape({
+              fields: array()
+                .of(
+                  object()
+                    .shape({
+                      fieldType: string().trim().required('Field is required'),
+                      size: mixed()
+                        .oneOf(['Small', 'Medium', 'Large', 'Extra-Large'])
+                        .required(),
+                    })
+                    .required()
+                )
+                .required(),
+            })
           )
           .required(),
       })

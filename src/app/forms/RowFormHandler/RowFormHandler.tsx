@@ -41,12 +41,12 @@ const RowFormHandler = ({
       <button
         className="bg-gray-100 rounded p-2"
         onClick={() =>
-          append([
-            Array.from({ length: rowsSize }, () => ({
+          append({
+            fields: Array.from({ length: rowsSize }, () => ({
               fieldType: '',
               size: 'Small',
             })),
-          ])
+          })
         }
       >
         + Add Row

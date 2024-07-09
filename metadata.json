@@ -1,0 +1,19 @@
+{
+  "label": "string",
+  "viewType": "string",
+  "sections": [
+    {
+      "name": "string",
+      "rows": [
+        {
+          "fields": [
+            {
+              "fieldType": "string",
+              "size": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

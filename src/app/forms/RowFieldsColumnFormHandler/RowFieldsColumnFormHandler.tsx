@@ -27,7 +27,7 @@ const RowFieldsFormHandler = ({
 }: Props) => {
   const { fields, append, remove, update } = useFieldArray({
     control,
-    name: `sections.${sectionIndex}.rows.${rowIndex}`,
+    name: `sections.${sectionIndex}.rows.${rowIndex}.fields`,
   });
 
   const handleShowInputOptions = (
@@ -66,7 +66,7 @@ const RowFieldsFormHandler = ({
       {fields.map((fieldValue, fieldIndex) => (
         <Controller
           control={control}
-          name={`sections.${sectionIndex}.rows.${rowIndex}.${fieldIndex}.fieldType`}
+          name={`sections.${sectionIndex}.rows.${rowIndex}.fields.${fieldIndex}.fieldType`}
           render={({ field, fieldState: { error } }) => {
             console.log(field.value, 'value');
             return (

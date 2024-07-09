@@ -6,7 +6,7 @@ export interface Metadata {
 
 export interface Section {
   name: string;
-  rows: Array<Array<Field>>;
+  rows: Array<{ fields: Array<Field> }>;
 }
 
 export interface Field {

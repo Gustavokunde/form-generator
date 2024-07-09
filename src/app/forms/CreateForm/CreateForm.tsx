@@ -50,6 +50,7 @@ const CreateForm = () => {
               validationState={error?.message ? 'error' : 'none'}
             >
               <Combobox
+                value={field.value}
                 selectedOptions={[field.value]}
                 onBlur={field.onBlur}
                 onOptionSelect={(e, data) => {

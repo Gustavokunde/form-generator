@@ -80,8 +80,8 @@ const RowFieldsFormHandler = ({
                   className="w-full"
                   placeholder="+ Add input"
                   expandIcon={null}
-                  defaultValue={field.value}
-                  selectedOptions={[field.value]}
+                  value={fieldValue.fieldType}
+                  selectedOptions={[fieldValue.fieldType]}
                   onBlur={field.onBlur}
                   onOptionSelect={(e, data) => {
                     update(fieldIndex, {

@@ -2,6 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Metadata } from '../interfaces/metadata';
+import { getMetadata } from '../services/medatada/getMetadata';
+import { saveMetadata } from '../services/medatada/saveMetadata';
 import { metadataValidation } from './metadataValidation';
 
 export const useMetadataCreation = () => {
@@ -16,20 +18,25 @@ export const useMetadataCreation = () => {
     ],
   });
 
-  const fetchMetadata = (req: Metadata) => {
+  const fetchMetadata = async () => {
+    const req = await getMetadata();
     setMetadata(req);
   };
 
+  const onSubmit = (values: Metadata) => {
+    saveMetadata(values);
+  };
   const {
     control,
-    getValues,
+    watch,
     setValue,
+    handleSubmit,
     formState: { errors, dirtyFields },
   } = useForm({
     defaultValues: metadata,
     resolver: yupResolver(metadataValidation),
     mode: 'all',
-    reValidateMode: 'onChange',
+    reValidateMode: 'onSubmit',
   });
 
   return {
@@ -38,6 +45,7 @@ export const useMetadataCreation = () => {
     errors,
     control,
     changeMetadata: setValue,
-    metadata: getValues(),
+    metadata: watch(),
+    handleSubmit: () => handleSubmit((values) => onSubmit(values as Metadata)),
   };
 };

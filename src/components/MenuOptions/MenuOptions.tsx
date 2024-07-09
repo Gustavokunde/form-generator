@@ -13,9 +13,12 @@ import {
   FlowchartRegular,
   MoreHorizontalFilled,
 } from '@fluentui/react-icons';
-import { FieldSize } from '../../app/interfaces/metadata';
+import { Field, FieldSize } from '../../app/interfaces/metadata';
+import { getDisableOption } from '../../utils/disableSizeField';
 
 type MenuOptions = 'layoutRules' | 'edit' | 'delete';
+
+const menuList: Array<FieldSize> = ['Small', 'Medium', 'Large', 'Extra-Large'];
 
 interface Props {
   handleShowInputOptions: (
@@ -23,12 +26,16 @@ interface Props {
   ) => void;
   onChangeFieldSize: (size: FieldSize) => void;
   onInputOptionsChoose: (data: MenuOptions) => void;
+  data: Array<Field>;
+  currentField: Field;
 }
 
 export const MenuOptions = ({
   handleShowInputOptions,
   onChangeFieldSize,
   onInputOptionsChoose,
+  data,
+  currentField,
 }: Props) => {
   const handleFieldSizeChange = (size: FieldSize) => {
     onChangeFieldSize(size);
@@ -65,18 +72,19 @@ export const MenuOptions = ({
             </MenuTrigger>
             <MenuPopover>
               <MenuList>
-                <MenuItemRadio name="field-width" value="small">
-                  Small
-                </MenuItemRadio>
-                <MenuItemRadio name="field-width" value="medium">
-                  Medium
-                </MenuItemRadio>
-                <MenuItemRadio name="field-width" value="large">
-                  Large
-                </MenuItemRadio>
-                <MenuItemRadio name="field-width" value="extra-large">
-                  Extra Large
-                </MenuItemRadio>
+                {menuList.map((menuOption) => (
+                  <MenuItemRadio
+                    name="field-width"
+                    value={menuOption}
+                    disabled={getDisableOption(
+                      data,
+                      menuOption,
+                      currentField.size
+                    )}
+                  >
+                    {menuOption.replace('-', ' ')}
+                  </MenuItemRadio>
+                ))}
               </MenuList>
             </MenuPopover>
           </Menu>

@@ -15,7 +15,7 @@ export const useMetadataCreation = () => {
   const addNewRow = (sectionIndex: number) => {
     const { sections } = { ...metadata };
     sections[sectionIndex].rows.push(
-      Array.from({ length: rowsSize }, () => ({ fieldType: '', size: 'small' }))
+      Array.from({ length: rowsSize }, () => ({ fieldType: '', size: 'Small' }))
     );
 
     setMetadata({ sections });
@@ -47,7 +47,7 @@ export const useMetadataCreation = () => {
   const addField = (sectionIndex: number, rowIndex: number) => {
     const { sections } = { ...metadata };
     sections[sectionIndex].rows[rowIndex].push({
-      size: 'small',
+      size: 'Small',
       fieldType: '',
     });
     setMetadata({ sections });

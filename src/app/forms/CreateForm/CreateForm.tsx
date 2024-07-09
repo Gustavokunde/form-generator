@@ -1,7 +1,8 @@
 import { Combobox, Field, Input, Option } from '@fluentui/react-components';
 import { DeleteRegular } from '@fluentui/react-icons';
-import { FieldSize } from '../../../app/interfaces/metadata';
 import { MenuOptions } from '../../../components/MenuOptions/MenuOptions';
+import { getDisableOption } from '../../../utils/disableSizeField';
+import { getClassSizeOptions } from '../../../utils/size';
 import { useMetadataCreation } from '../../hooks/useMetadataCreation';
 
 const InputOptions = ['title'];
@@ -9,16 +10,6 @@ const ViewTypeOptions = ['Create', 'Edit', 'View'];
 const styles = {
   primary: '#291e87',
   secondary: '',
-};
-
-const getSizeOptions = (size: FieldSize) => {
-  const sizes: { [K in FieldSize]: string } = {
-    small: 'w-1/3',
-    medium: 'w-1/2',
-    large: 'w-4/6',
-    'extra-large': 'w-100',
-  };
-  return sizes[size];
 };
 
 const CreateForm = () => {
@@ -45,7 +36,6 @@ const CreateForm = () => {
     rowIndex: number,
     fieldIndex: number
   ) => {
-    console.log('entered here');
     const menuOptions = {
       delete: () => deleteField(sectionIndex, rowIndex, fieldIndex),
       edit: () => {},
@@ -100,7 +90,7 @@ const CreateForm = () => {
                   className="flex w-full"
                 >
                   {fields.map((field, fieldIndex) => (
-                    <div className={`flex ${getSizeOptions(field.size)}`}>
+                    <div className={`flex ${getClassSizeOptions(field.size)}`}>
                       <Combobox
                         className="w-full"
                         placeholder="+ Add input"
@@ -125,11 +115,13 @@ const CreateForm = () => {
                             fieldIndex
                           )
                         }
+                        currentField={field}
+                        data={fields}
                         handleShowInputOptions={handleShowInputOptions}
                       />
                     </div>
                   ))}
-                  {fields.length < 3 && fields[0].size !== 'extra-large' && (
+                  {!getDisableOption(fields) && (
                     <button
                       className="bg-gray-100 rounded p-2"
                       onClick={() => addField(sectionIndex, rowIndex)}

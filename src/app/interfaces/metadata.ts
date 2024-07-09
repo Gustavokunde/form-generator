@@ -4,10 +4,10 @@ export interface Metadata {
 
 interface Section {
   name: string;
-  rows: Array<Array<Row>>;
+  rows: Array<Array<Field>>;
 }
 
-interface Row {
+export interface Field {
   fieldType: string;
   size: FieldSize;
 }
@@ -17,4 +17,4 @@ export interface FieldOptions {
   size: FieldSize;
 }
 
-export type FieldSize = 'small' | 'medium' | 'large' | 'extra-large';
+export type FieldSize = 'Small' | 'Medium' | 'Large' | 'Extra-Large';

@@ -78,7 +78,6 @@ const RowFieldsFormHandler = ({
           control={control}
           name={`sections.${sectionIndex}.rows.${rowIndex}.fields.${fieldIndex}.fieldType`}
           render={({ field, fieldState: { error } }) => {
-            console.log(field.value, 'value');
             return (
               <Field
                 key={'field' + sectionIndex + rowIndex + fieldIndex}

@@ -17,11 +17,11 @@ const RowFormHandler = ({ control, sectionIndex, errors }: Props) => {
   });
 
   return (
-    <div className="flex flex-col gap-2" key={'section' + sectionIndex}>
+    <div className="flex flex-col gap-8" key={'section' + sectionIndex}>
       {fields.map((row, rowIndex) => (
         <div
           key={'row' + rowIndex + sectionIndex.toString()}
-          className="flex w-full"
+          className="flex w-full gap-6"
         >
           <RowFieldsColumnFormHandler
             control={control as unknown as Control<Metadata>}

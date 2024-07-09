@@ -36,7 +36,7 @@ const SectionFormHandler = ({ control }: Props) => {
                 // style={{ backgroundColor: styles.primary }}
                 contentAfter={
                   <button
-                    disabled={fields.length === 0}
+                    disabled={fields.length === 1}
                     onClick={() => remove(sectionIndex)}
                   >
                     <DeleteRegular

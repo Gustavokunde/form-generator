@@ -23,8 +23,8 @@ export const useMetadataCreation = () => {
     setMetadata(req);
   };
 
-  const onSubmit = (values: Metadata) => {
-    saveMetadata(values);
+  const onSubmit = (values: unknown) => {
+    saveMetadata(values as Metadata);
   };
   const {
     control,
@@ -35,7 +35,7 @@ export const useMetadataCreation = () => {
   } = useForm({
     defaultValues: metadata,
     resolver: yupResolver(metadataValidation),
-    mode: 'all',
+    mode: 'onSubmit',
     reValidateMode: 'onSubmit',
   });
 
@@ -46,6 +46,7 @@ export const useMetadataCreation = () => {
     control,
     changeMetadata: setValue,
     metadata: watch(),
-    handleSubmit: () => handleSubmit((values) => onSubmit(values as Metadata)),
+    handleSubmit: handleSubmit,
+    onSubmit,
   };
 };

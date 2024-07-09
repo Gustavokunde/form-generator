@@ -74,6 +74,7 @@ export const MenuOptions = ({
               <MenuList>
                 {menuList.map((menuOption) => (
                   <MenuItemRadio
+                    key={menuOption}
                     name="field-width"
                     value={menuOption}
                     disabled={getDisableOption(

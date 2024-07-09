@@ -1,9 +1,13 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import { FieldOptions, Metadata } from '../interfaces/metadata';
-const rowsSize = 3;
+import { useFieldArray, useForm } from 'react-hook-form';
+import { Metadata } from '../interfaces/metadata';
+import { metadataValidation } from './metadataValidation';
 
 export const useMetadataCreation = () => {
   const [metadata, setMetadata] = useState<Metadata>({
+    label: '',
+    viewType: 'create',
     sections: [
       {
         name: '',
@@ -12,64 +16,39 @@ export const useMetadataCreation = () => {
     ],
   });
 
-  const addNewRow = (sectionIndex: number) => {
-    const { sections } = { ...metadata };
-    sections[sectionIndex].rows.push(
-      Array.from({ length: rowsSize }, () => ({ fieldType: '', size: 'Small' }))
-    );
-
-    setMetadata({ sections });
+  const fetchMetadata = (req: Metadata) => {
+    setMetadata(req);
   };
+
+  const {
+    control,
+    getValues,
+    setValue,
+    formState: { errors, dirtyFields },
+  } = useForm({
+    defaultValues: metadata,
+    resolver: yupResolver(metadataValidation),
+    mode: 'all',
+    reValidateMode: 'onChange',
+  });
+  const { append, fields, remove } = useFieldArray({
+    name: 'sections',
+    control,
+  });
 
   const addNewSection = () => {
-    const { sections } = { ...metadata };
-    sections.push({ name: '', rows: [] });
-    setMetadata({ sections });
-  };
-
-  const removeSection = (index: number) => {
-    const { sections } = { ...metadata };
-    sections.splice(index, 1);
-    setMetadata({ sections });
-  };
-
-  const editField = (
-    sectionIndex: number,
-    rowIndex: number,
-    fieldIndex: number,
-    newValue: FieldOptions
-  ) => {
-    const { sections } = { ...metadata };
-    sections[sectionIndex].rows[rowIndex][fieldIndex] = newValue;
-    setMetadata({ sections });
-  };
-
-  const addField = (sectionIndex: number, rowIndex: number) => {
-    const { sections } = { ...metadata };
-    sections[sectionIndex].rows[rowIndex].push({
-      size: 'Small',
-      fieldType: '',
-    });
-    setMetadata({ sections });
-  };
-
-  const deleteField = (
-    sectionIndex: number,
-    rowIndex: number,
-    fieldIndex: number
-  ) => {
-    const { sections } = { ...metadata };
-    sections[sectionIndex].rows[rowIndex].splice(fieldIndex, 1);
-    setMetadata({ sections });
+    append({ name: '', rows: [] });
   };
 
   return {
-    metadata,
-    addNewRow,
+    dirtyFields,
+    fetchMetadata,
+    errors,
+    control,
+    changeMetadata: setValue,
+    sections: fields,
+    metadata: getValues(),
     addNewSection,
-    removeSection,
-    editField,
-    addField,
-    deleteField,
+    deleteSection: remove,
   };
 };

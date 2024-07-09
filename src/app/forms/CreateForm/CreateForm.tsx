@@ -1,76 +1,92 @@
 import { Combobox, Field, Input, Option } from '@fluentui/react-components';
 import { DeleteRegular } from '@fluentui/react-icons';
-import { MenuOptions } from '../../../components/MenuOptions/MenuOptions';
-import { getDisableOption } from '../../../utils/disableSizeField';
-import { getClassSizeOptions } from '../../../utils/size';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Metadata } from 'src/app/interfaces/metadata';
 import { useMetadataCreation } from '../../hooks/useMetadataCreation';
+import RowFormHandler from '../RowFormHandler/RowFormHandler';
 
-const InputOptions = ['title'];
 const ViewTypeOptions = ['Create', 'Edit', 'View'];
 const styles = {
-  primary: '#291e87',
+  primary: '#120c46',
   secondary: '',
 };
 
 const CreateForm = () => {
   const {
-    addNewRow,
     addNewSection,
-    removeSection,
-    metadata,
-    addField,
-    editField,
-    deleteField,
+    deleteSection,
+    sections,
+    control,
+    errors,
+    changeMetadata,
   } = useMetadataCreation();
-
-  const handleShowInputOptions = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    e.preventDefault();
-  };
-
-  const onInputOptionsChoose = (
-    data: 'layoutRules' | 'edit' | 'delete',
-    sectionIndex: number,
-    rowIndex: number,
-    fieldIndex: number
-  ) => {
-    const menuOptions = {
-      delete: () => deleteField(sectionIndex, rowIndex, fieldIndex),
-      edit: () => {},
-      layoutRules: () => {},
-    };
-
-    menuOptions[data]();
-  };
 
   return (
     <>
       <h1>Page Layout Builder</h1>
       <section className="flex">
-        <Field label="Label" className="w-full">
-          <Input />
-        </Field>
-        <Field label="View Type" className="w-full">
-          <Combobox>
-            {ViewTypeOptions.map((option) => (
-              <Option key={option}>{option}</Option>
-            ))}
-          </Combobox>
-        </Field>
+        <Controller
+          control={control}
+          name={'label'}
+          render={({ field, fieldState: { error } }) => (
+            <Field
+              label="Label"
+              className="w-full"
+              validationMessage={error?.message}
+              validationState={error?.message ? 'error' : 'none'}
+            >
+              <Input {...field} />
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name={'viewType'}
+          render={({ field, fieldState: { error } }) => (
+            <Field
+              label="View Type"
+              className="w-full"
+              validationMessage={error?.message}
+              validationState={error?.message ? 'error' : 'none'}
+            >
+              <Combobox
+                selectedOptions={[field.value]}
+                onBlur={field.onBlur}
+                onOptionSelect={(e, data) => {
+                  changeMetadata('viewType', data.optionValue!);
+                }}
+              >
+                {ViewTypeOptions.map((option) => (
+                  <Option key={option}>{option}</Option>
+                ))}
+              </Combobox>
+            </Field>
+          )}
+        />
       </section>
       <div className="flex gap-2">
         <section className="flex flex-col gap-2 mt-2">
-          {metadata.sections.map((section, sectionIndex) => (
-            <Input
-              key={'sectionInput' + sectionIndex}
-              value={section.name}
-              contentAfter={
-                <button onClick={() => removeSection(sectionIndex)}>
-                  <DeleteRegular />
-                </button>
-              }
+          {sections.map((section, sectionIndex) => (
+            <Controller
+              key={section.name || '' + sectionIndex}
+              control={control}
+              name={`sections.${sectionIndex}.name`}
+              render={({ field, fieldState: { error } }) => (
+                <Field
+                  validationMessage={error?.message}
+                  validationState={error?.message ? 'error' : 'none'}
+                >
+                  <Input
+                    {...field}
+                    key={'sectionInput' + sectionIndex}
+                    contentAfter={
+                      <button onClick={() => deleteSection(sectionIndex)}>
+                        <DeleteRegular />
+                      </button>
+                    }
+                  />
+                </Field>
+              )}
             />
           ))}
           <button
@@ -81,63 +97,14 @@ const CreateForm = () => {
           </button>
         </section>
         <section className="mt-2 w-full">
-          {metadata.sections.map((section, sectionIndex) => (
-            <div className="flex flex-col gap-2" key={'section' + sectionIndex}>
-              <span>section name</span>
-              {section.rows.map((fields, rowIndex) => (
-                <div
-                  key={'row' + rowIndex + sectionIndex.toString()}
-                  className="flex w-full"
-                >
-                  {fields.map((field, fieldIndex) => (
-                    <div className={`flex ${getClassSizeOptions(field.size)}`}>
-                      <Combobox
-                        className="w-full"
-                        placeholder="+ Add input"
-                        expandIcon={null}
-                      >
-                        {InputOptions.map((option) => (
-                          <Option key={option}>{option}</Option>
-                        ))}
-                      </Combobox>
-                      <MenuOptions
-                        onChangeFieldSize={(size) =>
-                          editField(sectionIndex, rowIndex, fieldIndex, {
-                            ...field,
-                            size,
-                          })
-                        }
-                        onInputOptionsChoose={(data) =>
-                          onInputOptionsChoose(
-                            data,
-                            sectionIndex,
-                            rowIndex,
-                            fieldIndex
-                          )
-                        }
-                        currentField={field}
-                        data={fields}
-                        handleShowInputOptions={handleShowInputOptions}
-                      />
-                    </div>
-                  ))}
-                  {!getDisableOption(fields) && (
-                    <button
-                      className="bg-gray-100 rounded p-2"
-                      onClick={() => addField(sectionIndex, rowIndex)}
-                    >
-                      + Add a column
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                className="bg-gray-100 rounded p-2"
-                onClick={() => addNewRow(sectionIndex)}
-              >
-                + Add Row
-              </button>
-            </div>
+          {sections.map((section, sectionIndex) => (
+            <RowFormHandler
+              key={sectionIndex + 'section'}
+              control={control as unknown as Control<Metadata>}
+              sectionIndex={sectionIndex}
+              sectionName={section.name}
+              errors={errors as FieldErrors<Metadata>}
+            />
           ))}
         </section>
       </div>

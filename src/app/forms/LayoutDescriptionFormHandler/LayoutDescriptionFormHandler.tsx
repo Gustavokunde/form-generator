@@ -11,7 +11,7 @@ const ViewTypeOptions = ['Create', 'Edit', 'View'];
 
 const LayoutFormHandler = ({ control, changeMetadata }: Props) => {
   return (
-    <section className="flex gap-4">
+    <section className={'flex gap-4'}>
       <Controller
         control={control}
         name={'label'}

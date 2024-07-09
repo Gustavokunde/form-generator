@@ -1,4 +1,4 @@
-import { FieldSize } from 'src/app/interfaces/metadata';
+import { FieldSize } from '../app/interfaces/metadata';
 
 export const getClassSizeOptions = (size: FieldSize) => {
   const sizes: { [K in FieldSize]: string } = {

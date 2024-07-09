@@ -4,19 +4,13 @@ import RowFieldsColumnFormHandler from '../RowFieldsColumnFormHandler/RowFieldsC
 
 interface Props {
   sectionIndex: number;
-  sectionName?: string;
   control: Control<Metadata>;
   errors: FieldErrors<Metadata>;
 }
 
 const rowsSize = 3;
 
-const RowFormHandler = ({
-  control,
-  sectionName,
-  sectionIndex,
-  errors,
-}: Props) => {
+const RowFormHandler = ({ control, sectionIndex, errors }: Props) => {
   const { append, fields } = useFieldArray({
     control,
     name: `sections.${sectionIndex}.rows`,
@@ -24,7 +18,6 @@ const RowFormHandler = ({
 
   return (
     <div className="flex flex-col gap-2" key={'section' + sectionIndex}>
-      <span>{sectionName}</span>
       {fields.map((row, rowIndex) => (
         <div
           key={'row' + rowIndex + sectionIndex.toString()}

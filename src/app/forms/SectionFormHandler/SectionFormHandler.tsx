@@ -1,7 +1,8 @@
 import { Field, Input } from '@fluentui/react-components';
 import { DeleteRegular } from '@fluentui/react-icons';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
-import { Metadata } from 'src/app/interfaces/metadata';
+import { styles } from '../../const/colors';
+import { Metadata } from '../../interfaces/metadata';
 
 interface Props {
   control: Control<Metadata>;
@@ -32,9 +33,15 @@ const SectionFormHandler = ({ control }: Props) => {
               <Input
                 {...field}
                 key={'sectionInput' + sectionIndex}
+                // style={{ backgroundColor: styles.primary }}
                 contentAfter={
-                  <button onClick={() => remove(sectionIndex)}>
-                    <DeleteRegular />
+                  <button
+                    disabled={fields.length === 1}
+                    onClick={() => remove(sectionIndex)}
+                  >
+                    <DeleteRegular
+                    // className={`text-${[styles.light]}`}
+                    />
                   </button>
                 }
               />
@@ -43,7 +50,7 @@ const SectionFormHandler = ({ control }: Props) => {
         />
       ))}
       <button
-        className="border-dashed border rounded p-2 text-left"
+        className={`border-dashed border rounded p-2 text-left text-[${styles.primary}]`}
         onClick={addNewSection}
       >
         + Add section

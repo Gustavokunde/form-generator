@@ -17,7 +17,17 @@ interface Props {
   errors: FieldErrors<Metadata>;
 }
 
-const InputOptions = ['title'];
+const InputOptions = [
+  'Title',
+  'Summary for changes',
+  'Revision for changes',
+  'Is the document revision a pre-approved document?',
+  'Follow Up Comment',
+  'Check In Comment',
+  'Is Maintainable',
+  'Is Locked',
+  'Follow Up Approval Due Date',
+];
 
 const RowFieldsFormHandler = ({
   sectionIndex,
@@ -68,7 +78,6 @@ const RowFieldsFormHandler = ({
           control={control}
           name={`sections.${sectionIndex}.rows.${rowIndex}.fields.${fieldIndex}.fieldType`}
           render={({ field, fieldState: { error } }) => {
-            console.log(field.value, 'value');
             return (
               <Field
                 key={'field' + sectionIndex + rowIndex + fieldIndex}

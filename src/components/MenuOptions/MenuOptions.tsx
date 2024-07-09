@@ -43,9 +43,9 @@ export const MenuOptions = ({
 
   return (
     <Menu>
-      <MenuTrigger disableButtonEnhancement>
+      <MenuTrigger>
         <button
-          className="flex -ml-6 mr-3 relative items-center hover:text-[#af2b52]"
+          className="!flex -mt-8 mr-4 justify-self-end relative items-center hover:text-[#af2b52]"
           onClick={handleShowInputOptions}
         >
           <MoreHorizontalFilled />

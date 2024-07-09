@@ -57,7 +57,8 @@ So in order to make it more readable, the forms were handled in each level
 │   │     │ 
 │   │     ├── hooks --> metadata hook and validation
 │   │     ├── interfaces --> metadata interfaces
-│   │     └── pages
+│   │     ├── pages 
+│   │     └── services --> store backend integration
 │   │     
 │   ├── assets --> external services and controllers
 │   │     
@@ -89,3 +90,7 @@ Half part of commits were made in a bitbucket student account so I had to rebase
 unit tests
 api integration
 better ui experience and design implementation
+fix bugs such as:
+    - input size disable validation
+    - colors
+    - components behavior

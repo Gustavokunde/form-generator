@@ -17,7 +17,17 @@ interface Props {
   errors: FieldErrors<Metadata>;
 }
 
-const InputOptions = ['title'];
+const InputOptions = [
+  'Title',
+  'Summary for changes',
+  'Revision for changes',
+  'Is the document revision a pre-approved document?',
+  'Follow Up Comment',
+  'Check In Comment',
+  'Is Maintainable',
+  'Is Locked',
+  'Follow Up Approval Due Date',
+];
 
 const RowFieldsFormHandler = ({
   sectionIndex,

@@ -1,6 +1,6 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
 import { Metadata } from '../../interfaces/metadata';
-import RowFieldsFormHandler from '../RowFieldsFormHandler/RowFieldsFormHandler';
+import RowFieldsColumnFormHandler from '../RowFieldsColumnFormHandler/RowFieldsColumnFormHandler';
 
 interface Props {
   sectionIndex: number;
@@ -30,7 +30,7 @@ const RowFormHandler = ({
           key={'row' + rowIndex + sectionIndex.toString()}
           className="flex w-full"
         >
-          <RowFieldsFormHandler
+          <RowFieldsColumnFormHandler
             control={control as unknown as Control<Metadata>}
             sectionIndex={sectionIndex}
             rowIndex={rowIndex}

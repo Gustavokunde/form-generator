@@ -1,6 +1,6 @@
 export interface Metadata {
   label: string;
-  viewType: 'edit' | 'create' | 'view';
+  viewType: 'Edit' | 'Create' | 'View';
   sections: Array<Section>;
 }
 

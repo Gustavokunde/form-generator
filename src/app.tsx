@@ -1,10 +1,10 @@
 import { FluentProvider, webLightTheme } from '@fluentui/react-components';
-import CreateForm from './app/forms/CreateForm/CreateForm';
+import PageLayoutBuilder from './app/pages/PageLayoutBuilder/PageLayoutBuilder';
 
 export function App() {
   return (
     <FluentProvider theme={webLightTheme}>
-      <CreateForm />
+      <PageLayoutBuilder />
     </FluentProvider>
   );
 }

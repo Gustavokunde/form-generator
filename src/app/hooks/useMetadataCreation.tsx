@@ -1,13 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Metadata } from '../interfaces/metadata';
 import { metadataValidation } from './metadataValidation';
 
 export const useMetadataCreation = () => {
   const [metadata, setMetadata] = useState<Metadata>({
     label: '',
-    viewType: 'create',
+    viewType: 'Create',
     sections: [
       {
         name: '',
@@ -31,14 +31,6 @@ export const useMetadataCreation = () => {
     mode: 'all',
     reValidateMode: 'onChange',
   });
-  const { append, fields, remove } = useFieldArray({
-    name: 'sections',
-    control,
-  });
-
-  const addNewSection = () => {
-    append({ name: '', rows: [] });
-  };
 
   return {
     dirtyFields,
@@ -46,9 +38,6 @@ export const useMetadataCreation = () => {
     errors,
     control,
     changeMetadata: setValue,
-    sections: fields,
     metadata: getValues(),
-    addNewSection,
-    deleteSection: remove,
   };
 };

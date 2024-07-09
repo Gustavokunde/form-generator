@@ -23,7 +23,7 @@ const PageLayoutBuilder = () => {
   } = useMetadataCreation();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="p-4" onSubmit={handleSubmit(onSubmit)}>
       <h1>Page Layout Builder</h1>
       <LayoutDescriptionFormHandler
         control={control as unknown as Control<Metadata>}
